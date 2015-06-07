@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--*Create the famous game "Snake"-->
+    <title>The Snake</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <script src="js/jquery-1.11.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/snakeGame.js"></script>
+    <script>
+        function onStartGame() {
+            var canvas = document.getElementById('canvas');
+            canvas.style.border = '1px solid black';
+            canvas.style.display = "block";
+
+            document.getElementById("startButton").style.display = "none"; 
+
+            //game settings // 10 - 75 (<50) // 15 - 40 - 100speed / 20 , 25 = 120 gs 30 - 135 gs 50 - 150gs
+            var pixelSizeHolder = document.getElementById('pixelSizeValue');
+            var pixelSize = parseInt(pixelSizeHolder.options[pixelSizeHolder.selectedIndex].text);
+            var gamespeed = parseInt(document.getElementById('speedValue').value);
+            var numberOfObsticles = parseInt(document.getElementById('obsticlesValue').value);
+
+            // the actual snake game :))
+            var snakeGame = new SnakeGame(canvas, pixelSize, numberOfObsticles, gamespeed);
+            snakeGame.startGame();
+        }
+
+        function showSection(sectionId)
+        {
+            document.getElementById("settings").style.display = "none";
+            document.getElementById("playground").style.display = "none";
+            document.getElementById("scores").style.display = "none";
+            document.getElementById("about").style.display = "none";
+
+            document.getElementById(sectionId).style.display = "block";   
+        }
+
+        window.onload = function()
+        {
+            var currentScores = localStorage.getItem('scores');
+            if (!currentScores) {
+                currentScores = [];
+            }
+            else {
+                currentScores = JSON.parse(currentScores);
+            }
+            printScores(currentScores);
+        }
+
+    </script>
+</head>
+<body>
+    <header class="navbar navbar-static-top navbar-default" >
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topNavElements">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" onclick="showSection('playground')">The Snake</a>
+        </div>
+
+        <nav class="collapse navbar-collapse" id="topNavElements">
+          <ul class="nav navbar-nav">
+            <li onclick="showSection('settings')">
+                <a>Settings</a>
+            </li>
+            <li onclick="showSection('scores')">
+                <a>Scores</a>
+            </li>
+            <li onclick="showSection('about')">
+                <a>About</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section id="settings"  style="display:none">
+        <div class="container">
+            <h2>Settings:</h2>
+            <div class="well bs-component">
+            <form class="form-horizontal">
+              <fieldset>
+                <div class="form-group">
+                  <label for="pixelSizeValue" class="col-lg-2 control-label">Pixel size: </label>
+                  <div class="col-lg-10">
+                    <select class="form-control" id="pixelSizeValue">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>5</option>
+                        <option selected="selected">10 </option>
+                        <option>15</option>
+                        <option>20</option>
+                        <option>25</option>
+                        <option>30</option>
+                        <option>50</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="obsticlesValue" class="col-lg-2 control-label">Obsticles count: </label>
+                  <div class="col-lg-10"> 
+                    <input type="number" class="form-control" id="obsticlesValue" value="10">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="speedValue" class="col-lg-2 control-label">Game delay: </label>
+                  <div class="col-lg-10">
+                    <input type="number" class="form-control" id="speedValue" value="125">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <button type="reset" class="btn btn-default">Reset</button>
+                    <button type="button" onclick="showSection('playground')" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>   
+            </div>
+        </div>
+    </section>
+
+    <section id="playground" style="display:block">
+        <div class="container">
+            <button onclick="onStartGame()" id="startButton" class="btn btn-primary btn-lg center" style="font-size:2em; display:block;margin: 20% auto;">New Game</button>
+            <canvas id="canvas"  ></canvas>    
+        </div>
+    </section>
+
+    <section id="scores"  style="display:none">
+        <div class="container">
+            <h2>Top scores:</h2>
+        </div>
+    </section>
+    <section id="about"  style="display:none">
+        <div class="container">
+            <h2>About:</h2>
+
+            <h3>Hi all,</h3>
+            <p>My name is Stoyan Todorov and I am studing Software engineering in <a href="htt://fmi.uni-sofia.bg">Faculty of mathemathics</a> Sofia University.This is my course project for Mobile Internet Content (non mandatory course) for my specialty.</p>
+            
+            <h3>Contacts:</h3>
+
+            <p>Name: Stoyan Todorov</p>
+            <p>Email: <a href="mailto:st.todorov9@gmail.com">st.todorov9@gmail.com</a></p>
+            <p>Spaciality: Software engineering</p>
+            <p>Faculty number: 61675</p>
+        </div>
+    </section>
+</body>
+</html>
