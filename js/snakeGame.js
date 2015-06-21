@@ -1,9 +1,7 @@
 ﻿function SnakeGame(canvas, pixelSize, numberOfObsticles, gamespeed) {
 
-    var playgroundContainer = document.getElementById("playground").getElementsByTagName('div')[0];
-
-    canvas.width = getNumberCloseToPixel(playgroundContainer.clientWidth - playgroundContainer.clientWidth*0.05);
-    canvas.height = getNumberCloseToPixel(window.innerHeight*0.8);
+    canvas.width = getNumberCloseToPixel(window.innerWidth - pixelSize);
+    canvas.height = getNumberCloseToPixel(window.innerHeight - pixelSize);
     
     this.canvas = canvas;
     this.pixelSize = pixelSize;
@@ -86,51 +84,11 @@
 
         function gameOver() {
             clearInterval(gameEngine);
-            var userName = prompt('Enter your name: ', 'unnamed');
-
-            canvas.style.display = 'none';
-
-            var score = snake.score; 
-            var currentScores = localStorage.getItem('scores');
-            if (!currentScores) {
-                currentScores = [];
-            }
-            else {
-                currentScores = JSON.parse(currentScores);
-            }
-
-            processScores(currentScores, userName,score);
-            printScores(currentScores);
-            showSection("scores");
+            //canvas.style.display = 'none';
             document.getElementById("startButton").style.display = "block"; 
-
+            document.getElementById("game-over").style.display = "block";
             return false;
-        }
-
-        function processScores(currentScores, userName, score)
-        {
-            if (currentScores.length == 0) {
-                currentScores.push({ name: userName, score: score });
-            }
-            else {
-
-                if (score < currentScores[currentScores.length - 1].score) {
-                    currentScores.push({ name: userName, score: score });
-                }
-                else {
-                    for (var i = 0; i < currentScores.length; i++) {
-                        if (currentScores[i].score < score) {
-                            currentScores.splice(i, 0, { name: userName, score: score });
-                            break;
-                        }
-                    }
-                }
-            }
-
-            localStorage.removeItem('scores');
-            localStorage.setItem('scores', JSON.stringify(currentScores));
-        }
-         
+        }      
         
         function reDraw() {
             //clear
@@ -351,57 +309,4 @@
             }
         }
     }
-}
-
-function printScores(currentScores) {
-
-    var scoresSection = document.getElementById("scores").getElementsByTagName('div')[0];
-    
-    if(currentScores.length==0)
-    {
-        var messege = document.createElement('p');
-        messege.className = "text-info";
-        messege.innerHTML = "No records yet. You have the chance to be the first one. :)"   
-        scoresSection.appendChild(messege);
-        return;
-    }
-    var scoresBoard = document.createElement('table');
-    scoresBoard.className = "table table-striped";
-
-    var recordHeader = document.createElement('thead');
-    var scoreHeaderRow = document.createElement('tr');
-    var numberHeader = document.createElement('th');
-    var playerHeader = document.createElement('th');
-    var scoreHeader = document.createElement('th');
-
-    playerHeader.innerHTML = "Username";
-    numberHeader.innerHTML = "No.";
-    scoreHeader.innerHTML = "Score";
-
-    scoreHeaderRow.appendChild(numberHeader);
-    scoreHeaderRow.appendChild(playerHeader);
-    scoreHeaderRow.appendChild(scoreHeader);
-    recordHeader.appendChild(scoreHeaderRow);
-    scoresBoard.appendChild(recordHeader);
-
-    var listScores = document.createElement('tbody');
-    for (var i = 0; i < currentScores.length; i++) {
-        var currRecord = document.createElement('tr');
-
-        var currNumber = document.createElement('td');
-        var currPlayer = document.createElement('td');
-        var currScore = document.createElement('td');
-
-        currNumber.innerHTML = i+1;
-        currPlayer.innerHTML = currentScores[i].name;
-        currScore.innerHTML = currentScores[i].score;
-
-        currRecord.appendChild(currNumber);
-        currRecord.appendChild(currPlayer);
-        currRecord.appendChild(currScore);
-        listScores.appendChild(currRecord);
-    }
-    scoresBoard.appendChild(listScores);
-    scoresSection.removeChild(scoresSection.lastChild);
-    scoresSection.appendChild(scoresBoard);
 }
