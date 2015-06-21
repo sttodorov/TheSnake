@@ -8,14 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <script src="js/jquery-1.11.2.js"></script>
-    <script src="js/bootstrap.js"></script>
     <script src="js/snakeGame.js"></script>
     <script>
         function onStartGame() {
             var canvas = document.getElementById('canvas');
-            canvas.style.border = '1px solid black';
-            canvas.style.display = "block";
 
             document.getElementById("startButton").style.display = "none"; 
             document.getElementById("game-over").style.display = "none";
@@ -32,7 +28,7 @@
 <body>
     <section id="playground" style="display:block">
             <button onclick="onStartGame()" id="startButton" class="btn btn-primary btn-lg center" style="position:absolute;font-size:2em;left:50%;top:50%;transform: translate(-50%, -50%);">New Game</button>
-            <canvas id="canvas" style="" ></canvas>
+            <canvas id="canvas"></canvas>
             <div id="game-over" style="color:red;position:absolute;font-size:4em;left:50%;top:30%;transform: translate(-50%, -50%);display:none">
               <strong>Game Over!</strong>
             </div>    
